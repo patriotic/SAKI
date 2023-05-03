@@ -19,6 +19,8 @@ The analysis helps to identify patterns in driving behavior related to weather c
 * Data URL: [https://opendata.bonn.de/sites/default/files/Speed violations Bonn2020.csv](https://opendata.bonn.de/sites/default/files/GeschwindigkeitsverstoesseBonn2020.csv)
 * Data Type: CSV
 
+This dataset contains information on fines for speeding in the Bonn City area. It includes the date, time, place, fines, and offense number.
+
 ### Datasource2: NASA Prediction Of Worldwide Energy Resources
 * Metadata URL: [https://power.larc.nasa.gov/data-access-viewer](https://power.larc.nasa.gov/data-access-viewer)
 * Data URL: [https://drive.google.com/file/d/1E3OD_pLfRaeJX0T_kphVByg-k1eQx37W/view?usp=sharing](https://drive.google.com/file/d/1E3OD_pLfRaeJX0T_kphVByg-k1eQx37W/view?usp=sharing)
