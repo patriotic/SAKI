@@ -1,0 +1,17 @@
+# Configuration
+
+# Parameter
+parameter: ["T2M","PRECTOTCORR", "WS10M"]
+
+# Location in latitude and longitude coordinates
+lat: 50.7324
+lon: 7.1019
+
+# Format: YYYYMMDD
+start_date: 20200101
+
+# Format: YYYYMMDD
+end_date: 20201231
+
+# Output directory
+output_dir: ./project/data/extras

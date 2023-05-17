@@ -4,4 +4,5 @@ data.sqlite
 exploration.ipynb
 README.md
 report.ipynb
-data/extras
+project/data/extras
+project/data/__pycache__
