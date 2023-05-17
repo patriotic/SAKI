@@ -23,7 +23,8 @@ This dataset contains information on fines for speeding in the Bonn City area. I
 
 ### Datasource2: NASA Prediction Of Worldwide Energy Resources
 * Metadata URL: [https://power.larc.nasa.gov/data-access-viewer](https://power.larc.nasa.gov/data-access-viewer)
-* Data URL: [https://drive.google.com/file/d/1E3OD_pLfRaeJX0T_kphVByg-k1eQx37W/view?usp=sharing](https://drive.google.com/file/d/1E3OD_pLfRaeJX0T_kphVByg-k1eQx37W/view?usp=sharing)
+* Data Access: Nasa power api
+* Sample Data URL: [https://drive.google.com/file/d/1E3OD_pLfRaeJX0T_kphVByg-k1eQx37W/view?usp=sharing](https://drive.google.com/file/d/1E3OD_pLfRaeJX0T_kphVByg-k1eQx37W/view?usp=sharing)
 * Data Type: CSV
 
 This weather dataset is generated from the POWER project using the following options:
