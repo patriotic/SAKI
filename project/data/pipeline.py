@@ -1,5 +1,6 @@
 import extract
 import transform
+from load import LoadData
 
 def get_weather_data():
     return extract.get_weather_data()
@@ -18,6 +19,9 @@ def merge_data():
         transform_weather_data(),
         transform_traffic_data()
         )
+    
+def load_data_into_sqlite():
+    LoadData(merge_data())
 
 if __name__ == "__main__":
-    merge_data()
+    load_data_into_sqlite()

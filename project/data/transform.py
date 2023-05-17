@@ -22,5 +22,4 @@ def transform_traffic_data(df = pd.DataFrame):
     return df
     
 def merge_datasets(weather = pd.DataFrame, traffic = pd.DataFrame):
-    merged_df = pd.merge(weather, traffic, on='DATE')
-    print(merged_df)
+    return pd.merge(weather, traffic, on='DATE') 
