@@ -1,17 +1,31 @@
+// AirportsPipeline is responsible for creating ETL pipeline.
+// It will extract the dataset (csv file) from the web, interprets and loads it into SQLite database.
 pipeline AirportsPipeline {
 
+    // Fetch csv from the web using url.
+    // Input type: None
+    // Output type: File
 	block AirportsExtractor oftype HttpExtractor {
 		url: "https://opendata.rhein-kreis-neuss.de/api/v2/catalog/datasets/rhein-kreis-neuss-flughafen-weltweit/exports/csv";
 	}
 
+    // Interprets the File as a TextFile.
+    // Input type: File
+    // Output type: TextFile
 	block AirportsTextFileInterpreter oftype TextFileInterpreter {
 
 	}
 
+    // Interprets the TextFile as a csv-file containing string-values delimited by ;. 
+    // Input type: TextFile
+    // Output type: Sheet
 	block AirportsCSVInterpreter oftype CSVInterpreter {
 		delimiter: ';';
 	}
 
+    // Interprets the Sheet about airports with a topmost header row and interprets it as a Table by assigning a primitive valuetype to each column. 
+    // Input type: Sheet
+    // Output type: Table
 	block AirportsTableInterpreter oftype TableInterpreter {
 		header: true;
 		columns: [
@@ -31,11 +45,15 @@ pipeline AirportsPipeline {
 		];
 	}
 
+    // Loads the Table: airports into a SQLite database: airports.sqlite.
+    // Input type: Table
+    // Output type: None
 	block AirportsLoader oftype SQLiteLoader {
 		table: "airports";
 		file: "./airports.sqlite";
 	}
 
+    // Builds a chain of computing steps.
     AirportsExtractor 
         -> AirportsTextFileInterpreter
         -> AirportsCSVInterpreter
