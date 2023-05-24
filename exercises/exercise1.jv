@@ -4,27 +4,12 @@ pipeline AirportsPipeline {
 		url: "https://opendata.rhein-kreis-neuss.de/api/v2/catalog/datasets/rhein-kreis-neuss-flughafen-weltweit/exports/csv";
 	}
 
-	pipe {
-		from: AirportsExtractor;
-		to: AirportsTextFileInterpreter;
-	}
-
 	block AirportsTextFileInterpreter oftype TextFileInterpreter {
 
 	}
 
-	pipe {
-		from: AirportsTextFileInterpreter;
-		to: AirportsCSVInterpreter;
-	}
-
 	block AirportsCSVInterpreter oftype CSVInterpreter {
 		delimiter: ';';
-	}
-
-	pipe {
-		from: AirportsCSVInterpreter;
-		to: AirportsTableInterpreter;
 	}
 
 	block AirportsTableInterpreter oftype TableInterpreter {
@@ -46,13 +31,14 @@ pipeline AirportsPipeline {
 		];
 	}
 
-	pipe {
-		from: AirportsTableInterpreter;
-		to: AirportsLoader;
-	}
-
 	block AirportsLoader oftype SQLiteLoader {
 		table: "airports";
 		file: "./airports.sqlite";
 	}
+
+    AirportsExtractor 
+        -> AirportsTextFileInterpreter
+        -> AirportsCSVInterpreter
+        -> AirportsTableInterpreter
+        -> AirportsLoader;
 }
