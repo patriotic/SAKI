@@ -1,0 +1,17 @@
+from data.pipeline import Pipeline
+from data.extract import Extractor
+from data.transform import Transformer
+from data.load import Loader
+import os
+
+# def test_db_not_exists():
+#     assert os.path.exists("./project/data/data.sqlite") == False
+    
+    
+def test_run_pipeline():
+    extractor = Extractor()
+    transformer = Transformer()
+    loader = Loader()
+    pipeline = Pipeline(extractor, transformer, loader)
+    pipeline.run()
+    assert os.path.exists("./project/data/data.sqlite")
