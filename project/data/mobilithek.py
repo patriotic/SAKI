@@ -1,6 +1,31 @@
 import pandas as pd
+from abc import ABC, abstractmethod
 
-url = "https://opendata.bonn.de/sites/default/files/GeschwindigkeitsverstoesseBonn2020.csv"
+class Mobilithek(ABC):
+    @abstractmethod
+    def get_data(self):
+        pass
 
-def get_data():
-    return pd.read_csv(url, delimiter=";")
+class MobilithekRemote(Mobilithek):
+    def __init__(self, url) -> None:
+        self.url = url
+        self.df = None
+    
+    def get_data(self):
+        if self.url:
+            self.df = pd.read_csv(self.url, delimiter=";")
+            return self.df
+    
+    def save_data_to_local_storage(self, path):
+        if self.df is None:
+            self.get_data()
+        
+        self.df.to_csv(path, sep=";")
+            
+    
+class MobilithekLocal(Mobilithek):
+    def __init__(self, path) -> None:
+        self.path = path
+    
+    def get_data(self):
+        return pd.read_csv(self.path, delimiter=";")

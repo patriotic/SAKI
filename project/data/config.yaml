@@ -1,5 +1,9 @@
 # Configuration
 
+# Power API Url
+power_api_base_url: "https://power.larc.nasa.gov/api/temporal/daily/point?"
+traffic_data_base_url: "https://opendata.bonn.de/sites/default/files/GeschwindigkeitsverstoesseBonn2020.csv" 
+
 # Parameter
 parameter: ["T2M","PRECTOTCORR", "WS10M"]
 

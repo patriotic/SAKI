@@ -1,27 +1,36 @@
-import extract
-import transform
-from load import LoadData
+from extract import Extractor
+from transform import Transformer
+from load import Loader
 
-def get_weather_data():
-    return extract.get_weather_data()
-
-def transform_weather_data():
-    return transform.transform_weather_data(get_weather_data())
-
-def get_traffic_data():
-    return extract.get_traffic_data()
-
-def transform_traffic_data():
-    return transform.transform_traffic_data(get_traffic_data())
-
-def merge_data():
-    return transform.merge_datasets(
-        transform_weather_data(),
-        transform_traffic_data()
-        )
+class Pipeline:
     
-def load_data_into_sqlite():
-    LoadData(merge_data())
-
+    def __init__(self, extractor, transformer, loader) -> None:
+        self.__extractor = extractor
+        self.__transformer = transformer
+        self.__loader = loader
+    
+    def run(self):
+        # Extract weather data
+        weather_data = self.__extractor.get_weather_data()
+        
+        # Extract traffic data
+        traffic_data = self.__extractor.get_traffic_data()
+        
+        # Transform weather data
+        transform_weather_data = self.__transformer.transform_weather_data(weather_data)
+        
+        # Transform traffic data
+        transform_traffic_data = self.__transformer.transform_traffic_data(traffic_data)
+        
+        # Merge both transformed data
+        merge_data = self.__transformer.merge_datasets(transform_weather_data, transform_traffic_data)
+        
+        # Load the data into SQLite database
+        self.__loader.load_data_to_sqlite(merge_data)
+            
 if __name__ == "__main__":
-    load_data_into_sqlite()
+    extractor = Extractor()
+    transformer = Transformer()
+    loader = Loader()
+    pipeline = Pipeline(extractor, transformer, loader) 
+    pipeline.run()
