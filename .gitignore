@@ -6,3 +6,6 @@ README.md
 report.ipynb
 project/data/extras
 project/data/__pycache__
+materials
+project/__pycache__
+project/tests/__pycache__
