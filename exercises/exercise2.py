@@ -72,7 +72,7 @@ class DataTransformer():
     
     def transform(self):
         # Drop the 'Status' column.
-        self.drop_single_column('Status')
+        dropped_column = self.drop_single_column('Status')
 
         # Drop rows with empty cells
         self.drop_empty_rows()
@@ -106,6 +106,9 @@ class DataTransformer():
         
         pattern = r'^[A-Za-z]{2}:\d+:\d+(?::\d+)?$'
         self.filter_rows_using_pattern('IFOPT', pattern)
+        
+        # Add the dropped column 'Status'
+        self.df['Status'] = dropped_column
         
         return self.df
 
