@@ -46,15 +46,15 @@ class DataTransformer():
     def drop_single_column(self, column_name):
         self.df = self.df.drop('Status', axis=1)
     
-    # Drop rows with specific values in a column
-    def drop_rows_with_values(self, column_name, values_to_drop):
-        self.df = self.df[~self.df[column_name].isin(values_to_drop)]
+    # Filter rows with specific values in a column
+    def filter_rows_with_values(self, column_name, values):
+        self.df = self.df[self.df[column_name].isin(values)]
     
     # Replace a phrase in a column
     def replace_text(self, column_name, oldvalue, newvalue):
         self.df[column_name] = self.df[column_name].str.replace(oldvalue, newvalue)
     
-    # change the data types of columns 
+    # Change the data types of columns 
     def change_data_types(self, data_types):
         self.df = self.df.astype(data_types)
     
@@ -74,8 +74,11 @@ class DataTransformer():
         # Drop the 'Status' column.
         self.drop_single_column('Status')
 
-        # Drop rows where 'Verkehr' column has 'FV', 'RV', 'nur DPN' values.
-        self.drop_rows_with_values('Verkehr', ['FV', 'RV', 'nur DPN'])
+        # Drop rows with empty cells
+        self.drop_empty_rows()
+
+        # Filter rows where 'Verkehr' column has 'FV', 'RV', 'nur DPN' values.
+        self.filter_rows_with_values('Verkehr', ['FV', 'RV', 'nur DPN'])
         
         # Replace comma with period (decimal point) for 'Laenge' and 'Breite' 
         self.replace_text('Laenge', ',', '.')
@@ -102,9 +105,6 @@ class DataTransformer():
         
         pattern = r'^[A-Za-z]{2}:\d+:\d+(?::\d+)?$'
         self.filter_rows_using_pattern('IFOPT', pattern)
-        
-        # Drop rows with empty cells
-        self.drop_empty_rows()
         
         return self.df
 
