@@ -44,7 +44,7 @@ class DataTransformer():
     
     # Drop a single column
     def drop_single_column(self, column_name):
-        self.df = self.df.drop('Status', axis=1)
+        self.df = self.df.drop(column_name, axis=1)
     
     # Filter rows with specific values in a column
     def filter_rows_with_values(self, column_name, values):
@@ -85,8 +85,9 @@ class DataTransformer():
         self.replace_text('Breite', ',', '.')
 
         # change the data types of the columns
-        self.change_data_types({'Laenge': float, 'Breite': float})
-        
+        self.change_data_types({'EVA_NR': int, 'DS100': str, 'IFOPT': str, 'NAME': str, 
+                                'Verkehr': str, 'Laenge': float, 'Breite': float, 
+                                'Betreiber_Name': str, 'Betreiber_Nr': int})
         # Drop rows where 'Laenge' and 'Breite' values are beyond 90 and -90
         
         self.filter_rows_between_two_numbers('Laenge', 90,-90)
