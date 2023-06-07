@@ -34,7 +34,7 @@ class DataExtractor():
     # Read a csv file and return a data frame object.
     def get_data_from_csv(self):
         if self.url:
-            self.df = pd.read_csv(self.url, delimiter=";")
+            self.df = pd.read_csv(self.url, delimiter=";", decimal=",")
             return self.df
 
 # This class is responsible for transforming the data.
@@ -44,16 +44,12 @@ class DataTransformer():
     
     # Drop a single column
     def drop_single_column(self, column_name):
-        self.df = self.df.drop(column_name, axis=1)
+        self.df.drop(column_name, axis=1, inplace=True)
     
     # Filter rows with specific values in a column
     def filter_rows_with_values(self, column_name, values):
         self.df = self.df[self.df[column_name].isin(values)]
-    
-    # Replace a phrase in a column
-    def replace_text(self, column_name, oldvalue, newvalue):
-        self.df[column_name] = self.df[column_name].str.replace(oldvalue, newvalue)
-    
+        
     # Change the data types of columns 
     def change_data_types(self, data_types):
         self.df = self.df.astype(data_types)
@@ -79,10 +75,6 @@ class DataTransformer():
 
         # Filter rows where 'Verkehr' column has 'FV', 'RV', 'nur DPN' values.
         self.filter_rows_with_values('Verkehr', ['FV', 'RV', 'nur DPN'])
-        
-        # Replace comma with period (decimal point) for 'Laenge' and 'Breite' 
-        self.replace_text('Laenge', ',', '.')
-        self.replace_text('Breite', ',', '.')
 
         # change the data types of the columns
         self.change_data_types({'EVA_NR': int, 'DS100': str, 'IFOPT': str, 'NAME': str, 
