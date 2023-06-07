@@ -119,7 +119,7 @@ class DataLoader():
     # Write the DataFrame to an SQLite table
     def write_db(self):
         if self.conn != None:
-            self.df.to_sql(name='trainstops', con=self.conn, if_exists='replace')
+            self.df.to_sql(name='trainstops', con=self.conn, if_exists='replace', index=False)
     
     # Close the database connection
     def close_db(self):
