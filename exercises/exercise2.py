@@ -49,10 +49,6 @@ class DataTransformer():
     # Filter rows with specific values in a column
     def filter_rows_with_values(self, column_name, values):
         self.df = self.df[self.df[column_name].isin(values)]
-        
-    # Change the data types of columns 
-    def change_data_types(self, data_types):
-        self.df = self.df.astype(data_types)
     
     # Filter rows between first and last number
     def filter_rows_between_two_numbers(self,column_name, first_number, last_number):
@@ -76,10 +72,6 @@ class DataTransformer():
         # Filter rows where 'Verkehr' column has 'FV', 'RV', 'nur DPN' values.
         self.filter_rows_with_values('Verkehr', ['FV', 'RV', 'nur DPN'])
 
-        # change the data types of the columns
-        self.change_data_types({'EVA_NR': int, 'DS100': str, 'IFOPT': str, 'NAME': str, 
-                                'Verkehr': str, 'Laenge': float, 'Breite': float, 
-                                'Betreiber_Name': str, 'Betreiber_Nr': int})
         # Drop rows where 'Laenge' and 'Breite' values are beyond 90 and -90
         
         self.filter_rows_between_two_numbers('Laenge', 90,-90)
