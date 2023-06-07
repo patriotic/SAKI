@@ -50,9 +50,13 @@ class DataTransformer():
     def filter_rows_with_values(self, column_name, values):
         self.df = self.df[self.df[column_name].isin(values)]
     
+    # Change the data types of columns 
+    def change_data_types(self, data_types):
+        self.df = self.df.astype(data_types)
+    
     # Filter rows between first and last number
     def filter_rows_between_two_numbers(self,column_name, first_number, last_number):
-        self.df = self.df[(self.df[column_name] < first_number) & (self.df[column_name] > last_number)]
+        self.df = self.df[(self.df[column_name] <= first_number) & (self.df[column_name] >= last_number)]
     
     # Filter rows using a regex pattern
     def filter_rows_using_pattern(self, column_name, pattern):
@@ -60,7 +64,7 @@ class DataTransformer():
     
     # drop empty rows
     def drop_empty_rows(self):
-        self.df = self.df.dropna()
+        self.df.dropna(inplace=True)
     
     def transform(self):
         # Drop the 'Status' column.
@@ -72,8 +76,12 @@ class DataTransformer():
         # Filter rows where 'Verkehr' column has 'FV', 'RV', 'nur DPN' values.
         self.filter_rows_with_values('Verkehr', ['FV', 'RV', 'nur DPN'])
 
-        # Drop rows where 'Laenge' and 'Breite' values are beyond 90 and -90
+        # change the data types of the columns
+        self.change_data_types({'EVA_NR': int, 'DS100': str, 'IFOPT': str, 'NAME': str, 
+                                'Verkehr': str, 'Laenge': float, 'Breite': float, 
+                                'Betreiber_Name': str, 'Betreiber_Nr': int})
         
+        # Drop rows where 'Laenge' and 'Breite' values are beyond 90 and -90        
         self.filter_rows_between_two_numbers('Laenge', 90,-90)
         self.filter_rows_between_two_numbers('Breite', 90,-90)
         
@@ -87,7 +95,6 @@ class DataTransformer():
         # \d+: Again, matches one or more digits.
         # (?::\d+)?: This is an optional group denoted by ?. It matches a colon character followed by one or more digits. The ?: inside the parentheses is a non-capturing group, which is used to group but not capture the matching portion.
         # $: The dollar sign denotes the end of the string.
-        
         pattern = r'^[A-Za-z]{2}:\d+:\d+(?::\d+)?$'
         self.filter_rows_using_pattern('IFOPT', pattern)
         
