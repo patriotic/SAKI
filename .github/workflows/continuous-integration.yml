@@ -25,7 +25,7 @@ jobs:
         python-version: 3.11
 
     - name: Grant executable permissions to tests.sh
-      run: chmod +x ./project/tests.sh
+      run: chmod +x ./main/project/tests.sh
   
     - name: Run tests
       run: |
