@@ -6,7 +6,7 @@ on:
       - main
     paths:
       - project/**
-
+      
 jobs:
   pipeline-test:
     runs-on: ubuntu-latest
