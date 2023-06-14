@@ -24,9 +24,14 @@ jobs:
       with:
         python-version: 3.11
 
+    - name: Install Python dependencies
+      uses: py-actions/py-dependency-install@v4
+      with:
+        path: "./main/project/requirements.txt"
+
     - name: Grant executable permissions to tests.sh
       run: chmod +x ./main/project/tests.sh
-  
+    
     - name: Run tests
       run: |
         ./main/project/tests.sh
