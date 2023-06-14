@@ -24,4 +24,4 @@ jobs:
 
     - name: Run tests
       run: |
-        ./project/tests.sh
+        ./main/project/tests.sh
