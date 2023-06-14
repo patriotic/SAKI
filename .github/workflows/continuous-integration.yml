@@ -11,8 +11,6 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v3
-      with:
-        path: main
 
     - name: Set up Node
       uses: actions/setup-node@v3
@@ -27,11 +25,11 @@ jobs:
     - name: Install Python dependencies
       uses: py-actions/py-dependency-install@v4
       with:
-        path: "./main/project/requirements.txt"
+        path: "./project/requirements.txt"
 
     - name: Grant executable permissions to tests.sh
-      run: chmod +x ./main/project/tests.sh
+      run: chmod +x ./project/tests.sh
     
     - name: Run tests
       run: |
-        ./main/project/tests.sh
+        ./project/tests.sh
