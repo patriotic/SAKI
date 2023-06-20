@@ -1,7 +1,5 @@
 .github
-exercises/airports.sqlite
-exercises/trainstops.sqlite
-data.sqlite
+*.sqlite
 exploration.ipynb
 README.md
 report.ipynb

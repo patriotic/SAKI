@@ -1,0 +1,108 @@
+// CarsPipeline is responsible for creating ETL pipeline.
+// It will extract the dataset (csv file) from the web, interprets and loads it into SQLite database.
+pipeline CarsPipeline {
+
+    // Fetch csv from the web using url.
+    // Input type: None
+    // Output type: File
+	block CarsExtractor oftype HttpExtractor {
+		url: "https://www-genesis.destatis.de/genesis/downloads/00/tables/46251-0021_00.csv";
+	}
+
+    // Interprets the File as a TextFile.
+    // Input type: File
+    // Output type: TextFile
+	block CarsTextFileInterpreter oftype TextFileInterpreter {
+        encoding: "utf-8";
+	}
+
+    // Selects a range of lines from a TextFile.
+    // Input type: TextFile
+    // Output type: TextFile
+    block CarsTextRangeSelector oftype TextRangeSelector {
+        lineFrom: 7;
+        lineTo: 483;
+    }
+
+    // Interprets the TextFile as a csv-file containing string-values delimited by ;. 
+    // Input type: TextFile
+    // Output type: Sheet
+	block CarsCSVInterpreter oftype CSVInterpreter {
+		delimiter: ';';
+	}
+
+    // Deletes columns from a Sheet
+    // Input type: Sheet
+    // Output type: Sheet
+    block CarsColumnDeleter oftype ColumnDeleter{
+		 delete: [
+            column D, column E, column F, column Q, column H, column I, column J, 
+            column K, column L, column N, column O, column P, column Q, column R, 
+            column S, column T, column U, column V, column X, column Y, column Z,
+            column AA, column AB, column AC, column AD, column AE, column AF, column AH,
+            column AI, column AJ, column AK, column AL, column AM, column AN, column AO,
+            column AP, column AR, column AS, column AT, column AU, column AV, column AW,
+            column AX, column AY, column AZ, column BB, column BC, column BD, column BE,
+            column BF, column BQ, column BH, column BI, column BJ, column BL, column BM,
+            column BM, column BQ, column BR, column BS, column BT, column BV, column BW,
+            column BX, column BY, column BZ, column CA, column CB, column CC, column CD, 
+            column CE
+            ];
+	}
+
+    // Text type with the constraint of fixed 5 characters 
+    valuetype FixedFiveCharacters oftype text {
+        constraints: [ FixedFiveCharactersConstraint ];
+    }
+
+    constraint FixedFiveCharactersConstraint oftype LengthConstraint {
+        minLength: 5;
+        maxLength: 5;
+    }
+
+    // Integer type with the constraint of positive values
+    valuetype PositiveInteger oftype integer {
+        constraints: [PositiveIntegerConstraint];
+    }
+
+    constraint PositiveIntegerConstraint oftype RangeConstraint {
+        lowerBound: 0;
+        lowerBoundInclusive: false;
+    }
+
+    // Interprets the Sheet about cars as a Table by assigning a built-in or primitive valuetype to each column.
+    // Input type: Sheet
+    // Output type: Table
+	block CarsTableInterpreter oftype TableInterpreter {
+		header: false;
+		columns: [
+			"date" oftype text,
+			"CIN" oftype FixedFiveCharacters,
+			"name" oftype text,
+			"petrol" oftype PositiveInteger,
+			"diesel" oftype PositiveInteger,
+			"gas" oftype PositiveInteger,
+			"electro" oftype PositiveInteger,
+			"hybrid" oftype PositiveInteger,
+			"plugInHybrid" oftype PositiveInteger,
+			"others" oftype PositiveInteger
+		];
+	}
+
+    // Loads the Table: cars into a SQLite database: cars.sqlite.
+    // Input type: Table
+    // Output type: None
+	block CarsLoader oftype SQLiteLoader {
+		table: "cars";
+		file: "./cars.sqlite";
+	}
+
+    // Builds a chain of computing steps.
+    CarsExtractor 
+        -> CarsTextFileInterpreter
+        -> CarsTextRangeSelector
+        -> CarsCSVInterpreter
+        -> CarsColumnDeleter
+        -> CarsTableInterpreter
+        -> CarsLoader;
+}
