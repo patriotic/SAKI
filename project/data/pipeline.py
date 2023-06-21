@@ -31,6 +31,6 @@ class Pipeline:
 if __name__ == "__main__":
     extractor = Extractor()
     transformer = Transformer()
-    loader = Loader()
+    loader = Loader('traffic_fines','project/data/data.sqlite')
     pipeline = Pipeline(extractor, transformer, loader) 
     pipeline.run()
