@@ -26,4 +26,5 @@ class Transformer:
         return df
         
     def merge_datasets(self, weather = pd.DataFrame, traffic = pd.DataFrame):
-        return pd.merge(weather, traffic, on='DATE') 
+        df = pd.merge(weather, traffic, on='DATE')
+        return df.set_index(df.columns[0], drop=True)

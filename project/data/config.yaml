@@ -4,7 +4,11 @@
 power_api_base_url: "https://power.larc.nasa.gov/api/temporal/daily/point?"
 traffic_data_base_url: "https://opendata.bonn.de/sites/default/files/GeschwindigkeitsverstoesseBonn2020.csv" 
 
-# Parameter
+# Parameters
+# T2M: Temperature at 2 Meters: The average air (dry bulb) temperature at 2 meters above the surface of the earth.
+# PRECTOTCORR: Precipitation Corrected: The bias corrected average of total precipitation at the surface of the earth 
+# in water mass (includes water content in snow).
+# WS10M: Wind Speed at 10 Meters: The average of wind speed at 10 meters above the surface of the earth.
 parameter: ["T2M","PRECTOTCORR", "WS10M"]
 
 # Location in latitude and longitude coordinates
