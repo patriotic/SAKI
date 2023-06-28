@@ -1,8 +1,8 @@
 .github
 *.sqlite
-exploration.ipynb
+./exploration.ipynb
 README.md
-report.ipynb
+./report.ipynb
 project/data/extras
 project/data/__pycache__
 materials
