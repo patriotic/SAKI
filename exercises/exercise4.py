@@ -15,6 +15,15 @@ class TemperaturesPipeline():
     db_filename = "temperatures.sqlite"
     db_tablename = "temperatures"
     columns = ["Geraet", "Hersteller", "Model", "Monat", "Temperatur in °C (DWD)", "Batterietemperatur in °C", "Geraet aktiv"]
+    data_types = {
+        'Geraet': 'INTEGER',
+        'Hersteller': 'TEXT',
+        'Model': 'TEXT',
+        'Monat': 'INTEGER',
+        'Temperatur': 'FLOAT',
+        'Batterietemperatur': 'FLOAT',
+        'Geraet aktiv': 'TEXT'
+    }
     
     def __init__(self) -> None:
         self.extractor = None
@@ -33,7 +42,7 @@ class TemperaturesPipeline():
         loader = DataLoader(self.directory, self.db_filename, self.db_tablename)
         
         # Load the data into SQLite database.
-        loader.load_data_to_sqlite(transformer.transform())
+        loader.load_data_to_sqlite(transformer.transform(), self.data_types)
 
 # This class is responsible for fetching data from a url.
 class DataExtractor():
@@ -78,8 +87,8 @@ class DataTransformer():
         self.df = self.df.rename(columns= columns)
         
         # Convert Celsius to Fahrenheit
-        self.df['Temperatur'] = (self.df['Temperatur'] * 9/5) + 32
-        self.df['Batterietemperatur'] = (self.df['Batterietemperatur'] * 9/5) + 32
+        self.df['Temperatur'] = self.df['Temperatur'].apply(lambda x: round((x * 9/5) + 32, 2))
+        self.df['Batterietemperatur'] = self.df['Batterietemperatur'].apply(lambda x: round((x * 9/5) + 32, 2))
         
         # Validation
         self.df['Geraet'] = self.df['Geraet'] > 0
@@ -91,15 +100,16 @@ class DataTransformer():
 class DataLoader():
     def __init__(self, directory, file_name, table_name):
         self.conn = None
+        self.data_types = None
         self.directory = directory
         self.file_name = file_name
         self.table_name = table_name
     
     # Create a connection, Load the data into SQLite database and close the connection
-    def load_data_to_sqlite(self,  df = pd.DataFrame):
+    def load_data_to_sqlite(self, df, data_types):
         self.df = df
         self.connect_db()
-        self.write_db()
+        self.write_db(data_types)
         self.close_db()
     
     def db_file_path(self):
@@ -110,9 +120,9 @@ class DataLoader():
         self.conn = sqlite3.connect(self.db_file_path())
         
     # Write the DataFrame to an SQLite table
-    def write_db(self):
+    def write_db(self, data_types):
         if self.conn != None:
-            self.df.to_sql(name=self.table_name, con=self.conn, if_exists='replace', index= False)
+            self.df.to_sql(name=self.table_name, con=self.conn, if_exists='replace', index= False, dtype=data_types)
     
     # Read the SQLite table
     def read_db(self):
