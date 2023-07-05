@@ -8,3 +8,5 @@ project/data/__pycache__
 materials
 project/__pycache__
 project/tests/__pycache__
+*.csv
+*.zip
