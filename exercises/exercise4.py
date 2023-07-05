@@ -9,7 +9,7 @@ import os
 class TemperaturesPipeline():
     # Datasource: https://mobilithek.info/offers/526718847762190336
     source_url = "https://www.mowesta.com/data/measure/mowesta-dataset-20221107.zip"
-    directory = "./exercises/" 
+    directory = "./" 
     zip_filename = "mowesta.zip"
     csv_filename = "data.csv"
     db_filename = "temperatures.sqlite"
