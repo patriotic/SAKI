@@ -91,7 +91,7 @@ class DataTransformer():
         self.df['Batterietemperatur'] = (self.df['Batterietemperatur'].astype(float) * 9/5) + 32
         
         # Validation
-        self.df['Geraet'] = self.df['Geraet'] > 0
+        self.df = self.df[self.df['Geraet'] > 0]
         self.df = self.df[(self.df['Monat'] > 0) & (self.df['Monat'] < 13)]
         
         return self.df
