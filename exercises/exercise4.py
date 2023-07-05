@@ -87,8 +87,8 @@ class DataTransformer():
         self.df = self.df.rename(columns= columns)
         
         # Convert Celsius to Fahrenheit
-        self.df['Temperatur'] = self.df['Temperatur'].apply(lambda x: round((x * 9/5) + 32, 2))
-        self.df['Batterietemperatur'] = self.df['Batterietemperatur'].apply(lambda x: round((x * 9/5) + 32, 2))
+        self.df['Temperatur'] = (self.df['Temperatur'].astype(float) * 9/5) + 32
+        self.df['Batterietemperatur'] = (self.df['Batterietemperatur'].astype(float) * 9/5) + 32
         
         # Validation
         self.df['Geraet'] = self.df['Geraet'] > 0
